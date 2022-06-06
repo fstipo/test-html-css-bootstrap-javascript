@@ -1,30 +1,18 @@
-const fetchData = (resource, callback) => {
-  const request = new XMLHttpRequest();
-  request.addEventListener('readystatechange', () => {
-    if (request.readyState === 4 && request.status === 200) {
-      const data = JSON.parse(request.responseText);
-      callback(undefined, data);
-      console.log(data);
-    } else if (request.readyState === 4) {
-      callback(`⛔ Can't fetch the data`, undefined);
-    }
-  });
-  request.open('GET', resource);
-  // request.open('GET', 'https://jsonplaceholder.typicode.com/todos/5');
-  //   request.open('GET', 'https://jsonplaceholder.typicode.com/todoss/5');
-  //   request.open('GET', './todos.json');
-  request.send();
+const getTodos = async () => {
+  const response = await fetch(
+    'https://jsonplaceholder.typicode.com/todoss/20'
+  );
+  if (response.status !== 200) {
+    throw new Error("⛔ Can't fetch the data");
+  }
+  const data = await response.json();
+  return data;
 };
 
-fetchData('https://jsonplaceholder.typicode.com/todos/1', (err, data) => {
-  console.log('🚀');
-  console.log(data);
-  fetchData('https://jsonplaceholder.typicode.com/todos/2', (err, data) => {
-    console.log('🚀🚀');
-    console.log(data);
-    fetchData('https://jsonplaceholder.typicode.com/todos/3', (err, data) => {
-      console.log('🚀🚀🚀');
-      console.log(data);
-    });
-  });
-});
+console.log(1);
+console.log(2);
+getTodos()
+  .then((data) => console.log('resolved:', data))
+  .catch((err) => console.log('rejected:', err));
+console.log(3);
+console.log(4);
